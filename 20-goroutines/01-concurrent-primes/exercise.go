@@ -13,6 +13,10 @@ func GeneratePrimeChunk(chunkStart, chunkEnd int, pr chan int, done chan bool) {
 		done <- true
 	}()
 
+	if chunkStart >= chunkEnd {
+		return
+	}
+
 	if chunkStart%2 == 0 {
 		chunkStart++
 	}
@@ -36,9 +40,14 @@ func GeneratePrimes(n int) []int {
 		return []int{}
 	}
 
-	const numWorkers = 4
+	const maxNumWorkers = 4
 
+	numWorkers := maxNumWorkers
 	chunkSize := n / numWorkers
+	if n <= maxNumWorkers {
+		numWorkers = 1
+		chunkSize = n
+	}
 	res := make([]int, 1, int(math.Sqrt(float64(n))))
 	res[0] = 2
 
