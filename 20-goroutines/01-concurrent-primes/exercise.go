@@ -48,7 +48,13 @@ func GeneratePrimes(n int) []int {
 		numWorkers = 1
 		chunkSize = n
 	}
-	res := make([]int, 1, int(math.Sqrt(float64(n))))
+
+	// https://math.stackexchange.com/questions/54312/non-trivial-upper-bound-for-the-number-of-primes-less-or-equal-to-n/54325#54325
+	resBound := n
+	if n > 54 {
+		resBound = int(float64(n) / (math.Log(float64(n)) - 4))
+	}
+	res := make([]int, 1, resBound)
 	res[0] = 2
 
 	pr := make(chan int)
