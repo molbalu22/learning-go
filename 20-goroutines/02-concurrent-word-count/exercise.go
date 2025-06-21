@@ -6,7 +6,7 @@ import "strings"
 //go:generate go run ../../exercises-cli.go -student-id=$STUDENT_ID generate
 
 func wordCountsInString(str chan string, count chan map[string]int) {
-	for s, ok := <-str; ok; s, ok = <-str {
+	for s := range str {
 		c := make(map[string]int)
 		for word := range strings.FieldsSeq(s) {
 			c[word] += 1
